@@ -1,5 +1,5 @@
-  module "windowsservers" {
-    source              = "Azure/compute/azurerm"
+  module "winserver" {
+    source              = "./terraform-azurerm-compute"
     resource_group_name = azurerm_resource_group.main.name
     location            = "westus2"
     vm_hostname         = "${var.prefix}-win-server-vm"
@@ -14,3 +14,4 @@
     vm_size             = "Standard_DS2_V2"
     vnet_subnet_id      = azurerm_subnet.internal.id
   }
+
