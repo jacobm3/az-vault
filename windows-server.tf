@@ -1,5 +1,5 @@
   module "windowsservers" {
-    source              = "Azure/vm/azurerm"
+    source              = "Azure/compute/azurerm"
     resource_group_name = azurerm_resource_group.main.name
     location            = "westus2"
     vm_hostname         = "${var.prefix}-win-server-vm"
