@@ -28,7 +28,7 @@ resource "azurerm_public_ip" "main" {
   tags = {
     environment = "demo"
     owner = "jmartinson@hashicorp.com"
-    Name = "Azure Vault Demo Public IP - JacobM"
+    Name = "Vault Demo Public IP - JacobM"
   }
 }
 
