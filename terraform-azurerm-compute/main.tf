@@ -39,7 +39,7 @@ resource "azurerm_storage_account" "vm-sa" {
 
 resource "azurerm_virtual_machine" "vm-windows" {
   count                         = 1
-  name                          = "${var.vm_hostname}"
+  name                          = var.vm_hostname
   location                      = var.location
   resource_group_name           = azurerm_resource_group.vm.name
   availability_set_id           = azurerm_availability_set.vm.id
