@@ -2,7 +2,7 @@
     source              = "./terraform-azurerm-compute"
     resource_group_name = azurerm_resource_group.main.name
     location            = "westus2"
-    vm_hostname         = "${var.prefix}-win-server-vm"
+    vm_hostname         = "winsrv"
     admin_password      = "Com@#$%asdfADSFrd!"
     public_ip_dns       = ["jmartinson-vault-win-server-ip"]
     nb_public_ip        = "1"
