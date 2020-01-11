@@ -14,7 +14,10 @@ module "os" {
 resource "azurerm_resource_group" "vm" {
   name     = var.resource_group_name
   location = var.location
-  tags     = var.tags
+  tags = {
+       DoNotDelete = "true"
+       owner = "jmartinson@hashicorp.com"
+  }
 }
 
 resource "random_id" "vm-sa" {
@@ -68,7 +71,10 @@ resource "azurerm_virtual_machine" "vm-windows" {
     admin_password = var.admin_password
   }
 
-  tags = var.tags
+  tags = {
+       DoNotDelete = "true"
+       owner = "jmartinson@hashicorp.com"
+  }
 
   os_profile_windows_config {
     provision_vm_agent = true

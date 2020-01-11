@@ -2,6 +2,11 @@
 resource "azurerm_resource_group" "main" {
   name     = "${var.prefix}-rg"
   location = "West US 2"
+
+    tags = {
+       DoNotDelete = "true"
+       owner = "jmartinson@hashicorp.com"
+  }
 }
 
 resource "azurerm_virtual_network" "main" {
@@ -18,7 +23,7 @@ resource "azurerm_subnet" "internal" {
   address_prefix       = "10.0.2.0/24"
 }
 
-resource "azurerm_public_ip" "main" {
+resource "azurerm_public_ip" "vault" {
   name                    = "${var.prefix}-publicip"
   location                = azurerm_resource_group.main.location
   resource_group_name     = azurerm_resource_group.main.name
@@ -29,10 +34,11 @@ resource "azurerm_public_ip" "main" {
     environment = "demo"
     owner = "jmartinson@hashicorp.com"
     Name = "Vault Demo Public IP - JacobM"
+    DoNotDelete = "true"
   }
 }
 
-resource "azurerm_network_interface" "main" {
+resource "azurerm_network_interface" "vault" {
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
@@ -41,15 +47,15 @@ resource "azurerm_network_interface" "main" {
     name                          = "testconfiguration1"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.main.id
+    public_ip_address_id          = azurerm_public_ip.vault.id
   }
 }
 
-resource "azurerm_virtual_machine" "main" {
-  name                  = "${var.prefix}-vm"
+resource "azurerm_virtual_machine" "vault" {
+  name                  = "${var.prefix}-vault-vm"
   location              = azurerm_resource_group.main.location
   resource_group_name   = azurerm_resource_group.main.name
-  network_interface_ids = ["${azurerm_network_interface.main.id}"]
+  network_interface_ids = ["${azurerm_network_interface.vault.id}"]
   vm_size               = "Standard_DS1_v2"
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
@@ -72,7 +78,7 @@ resource "azurerm_virtual_machine" "main" {
     managed_disk_type = "Standard_LRS"
   }
   os_profile {
-    computer_name  = "vault-server"
+    computer_name  = "vault"
     admin_username = "ubuntu"
   }
   os_profile_linux_config {

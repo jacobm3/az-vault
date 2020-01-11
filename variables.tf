@@ -1,4 +1,4 @@
 variable "prefix" {
-  default = "jmartinson-vault"
+  default = "jmartinson"
 }
 
