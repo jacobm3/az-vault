@@ -20,4 +20,9 @@ resource "azurerm_mysql_server" "mysql" {
   administrator_login_password = "1YAKYohIpL64Vbw2d08s8wOYhuminA371ogM"
   version                      = "5.7"
   ssl_enforcement              = "Disabled"
+
+  tags = {
+    owner = "jmartinson@hashicorp.com"
+    DoNotDelete = "true"
+  }
 }
