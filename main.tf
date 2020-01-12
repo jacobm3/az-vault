@@ -93,5 +93,6 @@ resource "azurerm_virtual_machine" "vault" {
     environment = "demo"
     owner = "jmartinson@hashicorp.com"
     Name = "Azure Vault Demo - JacobM"
+    DoNotDelete = "true"
   }
 }

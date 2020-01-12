@@ -6,6 +6,7 @@ WS=az-vault
 
 tfe pushvars -dry-run false -overwrite-all true -name ${ORG}/${WS} \
  -tfe-address $HOST \
+ -env-var CONFIRM_DESTROY=1 \
  -env-var ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \
  -env-var ARM_TENANT_ID=$ARM_TENANT_ID \
  -env-var ARM_CLIENT_ID=$ARM_CLIENT_ID \
