@@ -66,9 +66,9 @@ resource "azurerm_virtual_machine" "vault" {
   # delete_data_disks_on_termination = true
 
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "8-gen2"
     version   = "latest"
   }
   storage_os_disk {
@@ -79,7 +79,7 @@ resource "azurerm_virtual_machine" "vault" {
   }
   os_profile {
     computer_name  = "vault"
-    admin_username = "ubuntu"
+    admin_username = "azureuser"
   }
   os_profile_linux_config {
     disable_password_authentication = true
