@@ -1,7 +1,7 @@
 resource "azurerm_public_ip" "apache" {
-  name                    = "${var.prefix}-publicip"
-  location                = azurerm_resource_group.main.location
-  resource_group_name     = azurerm_resource_group.main.name
+  name                    = "${var.prefix}-apache-publicip"
+  location                = data.azurerm_resource_group.main.location
+  resource_group_name     = data.azurerm_resource_group.main.name
   allocation_method       = "Dynamic"
   idle_timeout_in_minutes = 30
 
@@ -14,13 +14,13 @@ resource "azurerm_public_ip" "apache" {
 }
 
 resource "azurerm_network_interface" "apache" {
-  name                = "${var.prefix}-nic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  name                = "${var.prefix}-apache-nic"
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 
   ip_configuration {
     name                          = "testconfiguration1"
-    subnet_id                     = azurerm_subnet.internal.id
+    subnet_id                     = data.azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.apache.id
   }
@@ -28,8 +28,8 @@ resource "azurerm_network_interface" "apache" {
 
 resource "azurerm_virtual_machine" "apache" {
   name                  = "${var.prefix}-apache-vm"
-  location              = azurerm_resource_group.main.location
-  resource_group_name   = azurerm_resource_group.main.name
+  location              = data.azurerm_resource_group.main.location
+  resource_group_name   = data.azurerm_resource_group.main.name
   network_interface_ids = ["${azurerm_network_interface.apache.id}"]
   vm_size               = "Standard_DS1_v2"
 
@@ -47,7 +47,7 @@ resource "azurerm_virtual_machine" "apache" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "myosdisk1"
+    name              = "apache-myosdisk1"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "apache" {
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-            path     = "/home/ubuntu/.ssh/authorized_keys"
+            path     = "/home/azureuser/.ssh/authorized_keys"
             key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYNkA7EvTrnUuB3JmCjlJ+FD3BSs8sgBEgpk/ujDGXdvMKgiNMAUuRvAtnMo4ilEWNXQXGBQKp3/wE3+yXUDIq4Ve8MkYdn6JQviazqlM9L4JCmZtVEKn7cMo91MR0t82IdfbcI2hM3zgDrXmV/F1Sp9W8z4+TLTNgCmA3d61jvT2YIIxO6ag8zIwGjqwh9+r9lwa0eNRAdqtyO/GXcDAy1UHZPdt3tsTt7Ea2opmMJAWfAYAcw70fqS+9lcPtwvTXlxEoG5BYcDZMSEwmbNlR6Z/rfoGNb91MsspjSwxQwhUj+lILc5W3p3wdtLEiRqSuhr/BZYTTjla4yTI9U5qJ"
         }
   }
